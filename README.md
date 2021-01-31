@@ -1,4 +1,4 @@
-# Mara Tatari - MSc project - Birckbek University of London 
+# Mara Tatari - MSc project - Birkbeck University of London - Bioinformatics with Systems Biology
 
 ## Hypothesis/Aim
 
