@@ -123,9 +123,9 @@ y = pd.get_dummies(df['cistrans'], drop_first=True).rename(columns={'trans':'cis
 
 # creating the onehotencoder for the data
 ohe = OneHotEncoder()
-X_enc = pd.DataFrame(ohe.fit_transform(X[['pos1','pos2','pos4','pos5']]).toarray())
+#X_enc = pd.DataFrame(ohe.fit_transform(X[['pos1','pos2','pos3','pos4','pos5','pos7','pos8','pos9','pos10','pos11']]).toarray())
 
-X_train, x_test, y_train, y_test = train_test_split(X_enc, y, test_size= 0.4, random_state=101)
+X_train, x_test, y_train, y_test = train_test_split(X, y, test_size= 0.4, random_state=101)
 
 col_trans = make_column_transformer((OneHotEncoder(), ['pos1', 'pos2', 'pos3', 'pos4', 'pos5', 
            'pos7', 'pos8', 'pos9', 'pos10', 'pos11']), remainder='passthrough')
