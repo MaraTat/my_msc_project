@@ -1,3 +1,5 @@
+import pandas as pd
+
 def cleanupmydata(protdf):
     """
     Parameters
