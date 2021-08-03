@@ -11,9 +11,9 @@ from sklearn.pipeline import make_pipeline
 from sklearn import metrics
 
 # remember to locate the correct blosum file
-# BLOSUM62 = https://github.com/MaraTat/my_msc_project/blob/master/matrices/BLOSUM62
-# BLOSUM45 = https://github.com/MaraTat/my_msc_project/blob/master/matrices/BLOSUM45
-# BLOSUM80 = https://github.com/MaraTat/my_msc_project/blob/master/matrices/BLOSUM80
+# BLOSUM62 = 'https://github.com/MaraTat/my_msc_project/blob/master/matrices/BLOSUM62'
+# BLOSUM45 = 'https://github.com/MaraTat/my_msc_project/blob/master/matrices/BLOSUM45'
+# BLOSUM80 = 'https://github.com/MaraTat/my_msc_project/blob/master/matrices/BLOSUM80'
 
 blosum = pd.read_csv(BLOSUM62, skiprows=6, sep='\s+', index_col=0)
 blosum = blosum.reset_index(drop=True)    
