@@ -73,20 +73,10 @@ X_testcols = [c for c in X_test.columns]
 X_test_enc = pd.DataFrame(ohe.fit_transform(X_test[X_testcols]).toarray())
 y_test_enc = pd.get_dummies(df['cistrans'], drop_first=True).rename(columns={'trans':'cistrans conformation'}) # creating dummies for cis trans conformation using the rename() method
 
-## IgG prots ###
-df3 = IgGpro
-
-IgGX_test = df3.drop(['posmiddlePRO', 'omegaPRO', 'cistrans'], axis=1)
-IgGX_testcols = [c for c in IgGX_test.columns]
-IgGX_test_enc = pd.DataFrame(ohe.fit_transform(IgGX_test[IgGX_testcols]).toarray())
-IgGy_test_enc = pd.get_dummies(df3['cistrans'], drop_first=True).rename(columns={'trans':'cistrans conformation'}) # creating dummies for cis trans conformation using the rename() method
-
-
 ####### applying the model on the test set ########
 
 model = joblib.load(filename)
 result_test = model.score(X_test_enc, y_test_enc)
-result_testIgG = model.score(IgGX_test_enc, IgGy_test_enc)
 print(result_test.round(3))
-print(result_testIgG.round(3))
+
 
