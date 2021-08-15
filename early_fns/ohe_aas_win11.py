@@ -123,22 +123,24 @@ y = pd.get_dummies(df['cistrans'], drop_first=True).rename(columns={'trans':'cis
 
 # creating the onehotencoder for the data
 ohe = OneHotEncoder()
-X_enc = pd.DataFrame(ohe.fit_transform(X[['pos1','pos2','pos4','pos5']]).toarray())
+#X_enc = pd.DataFrame(ohe.fit_transform(X[['pos1','pos2','pos3','pos4','pos5','pos7','pos8','pos9','pos10','pos11']]).toarray())
 
-X_train, x_test, y_train, y_test = train_test_split(X_enc, y, test_size= 0.4, random_state=101)
+X_train, x_test, y_train, y_test = train_test_split(X, y, test_size= 0.4, random_state=101)
 
 col_trans = make_column_transformer((OneHotEncoder(), ['pos1', 'pos2', 'pos3', 'pos4', 'pos5', 
            'pos7', 'pos8', 'pos9', 'pos10', 'pos11']), remainder='passthrough')
 
 # performing a grid search to find the best parameters (see if it's necessary to change the numbers)
 paramgrid = {'C': [0.1,1,10,100], 'gamma':[10,1,0.1,0.01]}
-grid = GridSearchCV(SVC(), paramgrid, verbose=3)
+grid = GridSearchCV(SVC(), paramgrid, cv=5, verbose=3)
 pipe = make_pipeline(col_trans, grid)
 
 pipe.fit(X_train, y_train)
 predictions = pipe.predict(x_test)
 predictions
 
+# Matthews correlation coefficient has been published to be a better measure than f1-score
+print(metrics.matthews_corrcoef(y_test, predictions))
 print(metrics.confusion_matrix(y_test, predictions))
 class_names = ['cis', 'trans']
 metrics.plot_confusion_matrix(pipe,x_test,y_test, display_labels=class_names, cmap=plt.cm.Blues, normalize='true')
