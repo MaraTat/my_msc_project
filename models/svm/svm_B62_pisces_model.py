@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from glob import iglob
 
-
+# training set = ~700 proteins, testing set = 200 prots
 trainpath = 'D:/MSc_project/func_testing/new_sets/torsions_pisces_big/*.txt'
 
 testpath = 'D:/MSc_project/func_testing/new_sets/torsions_pisces_small/*.txt'
