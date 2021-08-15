@@ -15,8 +15,6 @@ training = pd.concat((pd.read_csv(f, skiprows=(0,1), header=None, delimiter='\s+
 testing = pd.concat((pd.read_csv(f, skiprows=(0,1), header=None, delimiter='\s+') 
                     for f in iglob(testpath, recursive=False)), ignore_index=True)
 
-IgGtesting = pd.concat((pd.read_csv(f, skiprows=(0,1), header=None, delimiter='\s+') 
-                    for f in iglob(IgGpath, recursive=False)), ignore_index=True)
 
 testme = cleanupmydata(testing)
 trainme = cleanupmydata(training)
