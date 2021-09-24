@@ -30,7 +30,7 @@ df = fullset21
 
 X = df.drop(['posmiddlePRO', 'omegaPRO', 'cistrans'], axis=1)
 Xcols = [c for c in X.columns]
-X_enc = X[Xcols].apply(lambda k: pd.Series(liko_encode(k)),axis=1) # encoding the X using the blosum matrix and function below
+X_enc = X[Xcols].apply(lambda k: pd.Series(liko_encode(k)),axis=1) # encoding the X using the LiKo matrix and function below
 y = pd.get_dummies(df['cistrans'], drop_first=True).rename(columns={'trans':'cistrans conformation'}) # creating dummies for cis trans conformation using the rename() method
 X_train, X_test, y_train, y_test = train_test_split(X_enc, y, test_size= 0.1)
 
