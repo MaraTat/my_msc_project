@@ -34,7 +34,7 @@ for v in  allmixdfs21:
     X = df.drop(['posmiddlePRO', 'omegaPRO', 'cistrans'], axis=1)
     Xcols = [c for c in X.columns]
     y = pd.get_dummies(df['cistrans'], drop_first=True).rename(columns={'trans':'cistrans conformation'}) # creating dummies for cis trans conformation using the rename() method
-    X_enc = X[Xcols].apply(lambda k: pd.Series(blosum_encode(k)),axis=1) # encoding the X using the blosum matrix and function below
+    X_enc = X[Xcols].apply(lambda k: pd.Series(blosum_encode(k)),axis=1) # encoding the X using the blosum matrix and function above
     X_train, X_test, y_train, y_test = train_test_split(X_enc, y, test_size= 0.1)
 
     rfc = RandomForestClassifier(oob_score=True, class_weight='balanced', verbose=3)
@@ -46,8 +46,8 @@ for v in  allmixdfs21:
     filename_rfc = 'D:/MSc_project/func_testing/new_sets/models/rfc_b62_cv5.sav' # saving the model
     joblib.dump(grid, filename_rfc)
     
-    grid_mcc_rfc.append(metrics.matthews_corrcoef(y_test, rfc_predictions).round(3))
-    grid_params_rfc.append(grid.best_params_)
+    grid_mcc_rfc_B62.append(metrics.matthews_corrcoef(y_test, rfc_predictions).round(3))
+    grid_params_rfc_B62.append(grid.best_params_)
     
     
     print(metrics.plot_confusion_matrix(grid,X_test,y_test, display_labels=['cis', 'trans'], cmap=plt.cm.Blues, normalize='true'))
