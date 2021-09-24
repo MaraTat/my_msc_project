@@ -23,8 +23,8 @@ def liko_encode(seq):
 
 fullset21 = pd.read_pickle('D:/MSc_project/datapickles/fullset_21.pkl')
 
-allmccs_xgb_liko = []
-allaccur_xgb_liko =[]
+grid_mcc_xgb_liko = []
+grid_params_xgb_liko =[]
 
 df = fullset21
 
@@ -34,36 +34,19 @@ X_enc = X[Xcols].apply(lambda k: pd.Series(liko_encode(k)),axis=1) # encoding th
 y = pd.get_dummies(df['cistrans'], drop_first=True).rename(columns={'trans':'cistrans conformation'}) # creating dummies for cis trans conformation using the rename() method
 X_train, X_test, y_train, y_test = train_test_split(X_enc, y, test_size= 0.1)
 
-xgb = XGBClassifier(n_estimators=100, tree_method= 'exact', use_label_encoder=False, verbosity=2,objective='binary:logistic')
-# n_scores_xgb = cross_val_score(xgb, X_enc, y, scoring='accuracy', cv=5, n_jobs=1)
-xgb.fit(X_train, y_train.values.ravel())
-xgb_predictions = xgb.predict(X_test)
-xgb_accur = metrics.accuracy_score(y_test, xgb_predictions)
+xgb = XGBClassifier(tree_method= 'exact', use_label_encoder=False, verbosity=2,objective='binary:logistic')
+paramgrid = {'n_estimators': [100,200,500,1000]} # performing a grid search to find the best parameters
+grid = GridSearchCV(xgb, paramgrid, cv=5, verbose=3) # grid is the model, could be KNN or random forests
+grid.fit(X_train, y_train.values.ravel()) # fitting the model
+xgb_predictions = grid.predict(X_test) # getting the preds
 
-allmccs_xgb_liko.append(metrics.matthews_corrcoef(y_test, xgb_predictions).round(3))
-allaccur_xgb_liko.append(xgb_accur.round(3))
 
-filename_xgb = 'D:/MSc_project/func_testing/new_sets/models/xgb_liko_win21.sav'
-joblib.dump(xgb, filename_xgb)
+filename_xgb = 'D:/MSc_project/func_testing/new_sets/models/xgb_liko_win21.sav' # saving the model
+joblib.dump(grid, filename_xgb)
+
+grid_mcc_xgb_liko.append(metrics.matthews_corrcoef(y_test, xgb_predictions).round(3))
+grid_params_xgb_liko.append(grid.best_params_)
 print(metrics.plot_confusion_matrix(grid,X_test,y_test, display_labels=['cis', 'trans'], cmap=plt.cm.Blues, normalize='true'))
 print(metrics.plot_roc_curve(grid, X_test, y_test))
-
-    rfc = RandomForestClassifier(oob_score=True, class_weight='balanced', verbose=3)
-    paramgrid = {'n_estimators': [100,200,500,1000]} # performing a grid search to find the best number of trees
-    grid = GridSearchCV(rfc, paramgrid , cv=5, verbose=3) # grid is the model, could be KNN or random forests
-    grid.fit(X_train, y_train.values.ravel()) # fitting the model
-    rfc_predictions = grid.predict(X_test) # getting the preds
-    
-   
-    
-    
-
-
-
-
-
-
-
-
 
 
