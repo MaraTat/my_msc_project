@@ -1,8 +1,15 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
 
-
-
-
-
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import make_column_transformer
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn import metrics
+from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
+import joblib
 
 fullset21 = pd.read_pickle('D:/MSc_project/datapickles/fullset_21.pkl')
 
@@ -18,13 +25,13 @@ X_enc = pd.DataFrame(ohe.fit_transform(X[Xcols]).toarray())
 y = pd.get_dummies(df['cistrans'], drop_first=True).rename(columns={'trans':'cistrans conformation'}) # creating dummies for cis trans conformation using the rename() method
 X_train, X_test, y_train, y_test = train_test_split(X_enc, y, test_size= 0.1)
 
-xgb = XGBClassifier(n_estimators=100, tree_method= 'exact', use_label_encoder=False, verbosity=2,objective='binary:logistic')
-paramgrid = {'n_estimators': [100]} # performing a grid search to find the best parameters
+xgb = XGBClassifier(tree_method= 'exact', use_label_encoder=False, verbosity=2,objective='binary:logistic')
+paramgrid = {'n_estimators': [100,200,500,1000]} # performing a grid search to find the best parameters
 grid = GridSearchCV(xgb, paramgrid, cv=5, verbose=3) # grid is the model, could be KNN or random forests
 grid.fit(X_train, y_train.values.ravel()) # fitting the model
 xgb_predictions = grid.predict(X_test) # getting the preds
 
-filename_rfc = 'D:/MSc_project/func_testing/new_sets/models/ohe_rfc_df21_single_cv5.sav'
+filename_rfc = 'D:/MSc_project/func_testing/new_sets/models/ohe_rfc_df21_cv5.sav' # saving the model
 joblib.dump(grid, filename_rfc)
 
 grid_mcc_xgb.append(metrics.matthews_corrcoef(y_test, xgb_predictions).round(3))
