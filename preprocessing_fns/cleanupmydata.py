@@ -5,12 +5,12 @@ def cleanupmydata(protdf):
     Parameters
     ----------
     protdf : TYPE .txt file which has been generated through another function pdbtorsions outside of this function
-        DESCRIPTION.
-        I still need to finish the function info
+        DESCRIPTION. used to eliminate unnecessary information such as modified amino acids 
+        or amino acids at the ends of proteins where the torsion angles are not useful for downstream analysi
 
     Returns
     -------
-    None.
+    Cleaned up dataframe with the amino acid residues encoded as single letters and the omega torsion angles
 
     """
     try:
