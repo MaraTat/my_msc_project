@@ -6,14 +6,15 @@ def prowindows(prot_df, window):
 
     Parameters
     ----------
-    protdf : TYPE
-        DESCRIPTION.
-    window : TYPE
-        DESCRIPTION.
+    protdf : TYPE dataframe
+        DESCRIPTION. takes a dataframe that contains the protein sequence of interest in the format of aa residue - omega torsion and 
+        extracts windows of user-specified odd size (window) with Proline (P) always in the central position 
+    window : TYPE numeric
+        DESCRIPTION. Window of odd size which contains the Proline always in the central position
 
     Returns
     -------
-    None.
+    A dataframe with all extracted windows (centralised Proline) from a protein sequence of interest
 
     """
     if not isinstance(prot_df, pd.DataFrame):
